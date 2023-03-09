@@ -1,34 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import React, { useState } from 'react';
+import './App.css';
+import ReactCardFlip from 'react-card-flip';
 
+const flashcard_data = [
+  { question: "1 + 1", answer: "2" },
+  { question: "12 * 12", answer: "144" },
+  { question: "14 * 2", answer: "28" },
+  { question: "3 + 9", answer: "12" },
+  { question: "99 - 0", answer: "99" },
+  { question: "125 + 24", answer: "149" },
+  { question: "1 + 5", answer: "6" },
+  { question: "12 * 10", answer: "120" },
+  { question: "1 / 0", answer: "DNE" },
+  { question: "12 * 0", answer: "0" },
+  { question: "400x dx", answer: "400" }
+];
 
-function App() {
-  const [card, setCard] = useState(0)
-  function nextCard(){
-    pass
-  }
-  function cardChange(){
-    if(card >= flashcard_data.length -2){
-      setCard(card - 3)
-      console.log("help")
+const App = () => {
+  const [card, setCard] = useState(0);
+  const [isFlip, setFlip] = useState(false);
+
+  const handleCardChange = (change) => {
+    const newCard = card + change;
+    if (newCard > flashcard_data.length - 1) {
+      setCard(0);
+    } 
+    else if (newCard < 0) {
+      setCard(flashcard_data.length - 1);
+    } 
+    else {
+      setCard(newCard);
     }
-    setCard(card + 1)
-    console.log(card)
-  }
-  function cardData(list){
-    pass
-  }
-
+  };
 
   return (
-    <div className="App">
-      <div className='Title'></div>
-      <div className='Card' >{flashcard_data[card].question}{flashcard_data[card].answer}</div>
-      <div className='Next' onClick={cardChange} >Next</div>
+    <div className='App'>
+      <h1>Math Do be Mathing</h1>
+      <h2>How good are you at solving math? Test your math knowledge</h2>
+      <h2>Number of Cards : 11</h2>
+      <div className='card'>
+      <ReactCardFlip isFlipped={isFlip}>
+        <div className="front" onClick={() => setFlip(!isFlip)}>{flashcard_data[card].question}</div>
+        <div className="back" onClick={() => setFlip(!isFlip)}>{flashcard_data[card].answer}</div>
+      </ReactCardFlip>
+      </div>     
+      
+      <button className='button' onClick={() => handleCardChange(1)}>Next</button>
     </div>
-  )
-}
-const flashcard_data = [{question: "a",answer:"a1"},{question: "b",answer:"b1"},{question: "c",answer:"c1"}]
+  );
+};
 
-export default App
+export default App;
